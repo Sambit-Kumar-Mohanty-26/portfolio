@@ -1,30 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --background: #ffffff;
+  --foreground: #000000;
+  --star-bg: #ffffff;
+  --star-grid: rgba(0, 0, 0, 0.05);
+}
+
+:root.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --star-bg: #000000;
+  --star-grid: rgba(255, 255, 255, 0.1);
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-  );
+  color: var(--foreground);
+  background-color: var(--background);
+  transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+  cursor: none; 
 }
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #000;
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+a, button, input { cursor: none; }
+:root.dark .hide-on-dark { display: none; }
+:root:not(.dark) .hide-on-light { display: none; }
