@@ -29,7 +29,7 @@ const projects = [
     description: "Axion Flow is the AI command center for your factory, transforming operational chaos into predictable, optimized workflow.",
     tech: ["TypeScript", "Tailwind CSS", "Shadcn UI", "Socket.io"],
     color: "#bd24ff", 
-    image: "/project3_v2.png", 
+    image: "/project3_V2.png", 
     link: "#"
   },
   {
