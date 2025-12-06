@@ -7,32 +7,36 @@ import { Github, ExternalLink } from 'lucide-react';
 const projects = [
   {
     title: "The Artisan's Loom",
-    category: "Full Stack • E-Commerce",
-    description: "Empowering artisans with AI-powered discovery tools & voice listings.",
+    category: "Cultural Heritage • E-Commerce",
+    description: "An AI-powered digital marketplace designed to empower Indian artisans by connecting them with a global audience. The platform focuses on preserving cultural heritage through story-rich profiles and regional discovery while removing language and technical barriers.",
+    tech: ["React", "Stripe", "Firebase", "Google Cloud AI", "AR.js (WebXR)"],
     color: "#ff7b00", 
     image: "/project1.png",
     link: "#"
   },
   {
-    title: "Phoenix - AI Chat",
-    category: "AI • Realtime Sockets",
-    description: "Gemini-powered chat with history, code syntax highlighting & memory.",
+    title: "ResuPlex",
+    category: "EdTech • Productivity",
+    description: "An intelligent resume builder that leverages Generative AI to help users craft perfectly tailored, ATS-friendly resumes to accelerate their career progress.",
+    tech: ["TypeScript", "Express", "PostgreSQL", "Puppeteer", "Prisma ORM"],
     color: "#00f0ff", 
     image: "/project2.png",
     link: "#"
   },
   {
-    title: "Code Snapper",
+    title: "Axion Flow",
     category: "Open Source • Tooling",
-    description: "Generate beautiful code snippets. Export as SVG/PNG with 12+ themes.",
+    description: "Axion Flow is the AI command center for your factory, transforming operational chaos into predictable, optimized workflow. Our platform gives you a live digital twin to predict disruptions and intelligently guide decisions for maximum productivity.",
+    tech: ["TypeScript", "Tailwind CSS", "Shadcn UI", "Socket.io"],
     color: "#bd24ff", 
     image: "/project3_v2.png", 
     link: "#"
   },
   {
-    title: "Taskify - SaaS",
-    category: "Productivity • Next.js",
-    description: "A collaborative task manager with Drag & Drop boards, real-time analytics, and team workspaces.",
+    title: "Project SAMARTH",
+    category: "Governance • Analytics",
+    description: "A Smart Analytics Dashboard specifically designed for \"Police Good Work Recognition.\" It visualizes performance data to help law enforcement agencies monitor safety trends and recognize high-performing units.",
+    tech: ["TypeScript", "Tailwind CSS", "Recharts", "Leaflet Maps"],
     color: "#84cc16", 
     image: "/project4.png", 
     link: "#"
@@ -81,30 +85,41 @@ function Card({ i, project, progress, range }: any) {
             />
 
             <div className="relative h-full w-full rounded-[30px] bg-[#080808] overflow-hidden flex flex-col md:flex-row gap-8 pl-10 pr-4 py-8 z-10">
-                
                 <motion.div 
                     className="absolute inset-0 pointer-events-none mix-blend-overlay"
                     style={{ background: spotlight }}
                 />
 
-                <div className="w-full md:w-[45%] flex flex-col justify-between pt-4 relative z-20">
+                <div className="w-full md:w-[45%] flex flex-col justify-between pt-2 relative z-20">
                     <div>
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-6 w-fit shadow-lg">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-4 w-fit shadow-lg">
                             <div className="w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px_currentColor]" style={{ backgroundColor: project.color, color: project.color }}></div>
                             <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-gray-300">
                                 {project.category}
                             </span>
                         </div>
 
-                        <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-[1.1] tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
+                        <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-[1.1] tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
                             {project.title}
                         </h3>
 
-                        <p className="text-gray-400 text-lg leading-relaxed border-l-2 border-white/10 pl-4 transition-colors">
+                        <p className="text-gray-400 text-lg leading-relaxed border-l-2 border-white/10 pl-4 transition-colors mb-6">
                             {project.description}
                         </p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {project.tech.map((tech: string, index: number) => (
+                                <span 
+                                    key={index}
+                                    className="px-3 py-1 text-[11px] font-mono font-medium rounded-full bg-white/5 border border-white/10 text-gray-400 group-hover:text-white group-hover:border-white/20 transition-all"
+                                >
+                                    {tech}
+                                </span>
+                            ))}
+                        </div>
+
                     </div>
-                    <div className="flex gap-4 mt-8">
+                    
+                    <div className="flex gap-4 mt-2">
                         <a href={project.link} className="relative overflow-hidden group/btn flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold text-sm tracking-wide transition-all hover:scale-105">
                             <span className="relative z-10 flex items-center gap-2">
                                 VISIT SITE <ExternalLink className="w-4 h-4 group-hover/btn:rotate-45 transition-transform duration-300" />
@@ -135,7 +150,6 @@ function Card({ i, project, progress, range }: any) {
 
             </div>
         </div>
-
         <div 
            className="absolute -top-10 -right-10 w-96 h-96 rounded-full blur-[150px] opacity-10 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none -z-10"
            style={{ backgroundColor: project.color }}
@@ -154,7 +168,6 @@ export default function Projects() {
 
   return (
     <div ref={container} id="projects" className="relative mt-20 mb-32">
-      
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-purple-900/5 to-transparent blur-3xl -z-10"></div>
       <div className="container mx-auto px-4 mb-20 text-center">
         <motion.div
@@ -182,7 +195,6 @@ export default function Projects() {
           );
         })}
       </div>
-      
     </div>
   );
 }
