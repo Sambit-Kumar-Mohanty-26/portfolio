@@ -11,14 +11,46 @@ export default function ThemeToggle() {
 
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+
+  const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    if (!document.startViewTransition) {
+      setTheme(theme === 'light' ? 'dark' : 'light');
+      return;
+    }
+    const endRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    );
+
+    // @ts-ignore
+    const transition = document.startViewTransition(async () => {
+      setTheme(theme === 'light' ? 'dark' : 'light');
+    });
+    await transition.ready;
+
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${endRadius}px at ${x}px ${y}px)`,
+    ];
+
+    document.documentElement.animate(
+      {
+        clipPath: clipPath,
+      },
+      {
+        duration: 500,
+        easing: "ease-in-out",
+        pseudoElement: "::view-transition-new(root)",
+      }
+    );
   };
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-10 h-10 rounded-full border border-foreground/10 bg-foreground/5 hover:bg-foreground/10 transition-colors overflow-hidden"
+      className="relative flex items-center justify-center w-10 h-10 rounded-full border border-foreground/10 bg-foreground/5 hover:bg-foreground/10 transition-colors overflow-hidden z-50"
       aria-label="Toggle Theme"
     >
         <motion.div
