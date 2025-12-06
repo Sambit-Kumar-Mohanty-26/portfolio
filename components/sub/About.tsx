@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform, animate } from 'framer
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Terminal, Github, Star, GitBranch } from 'lucide-react';
+
 const GITHUB_USERNAME = "Sambit-Kumar-Mohanty-26"; 
 
 const FALLBACK_STATS = {
@@ -11,6 +12,7 @@ const FALLBACK_STATS = {
   stars: 3,
   commits: 670
 };
+
 const customStyles = `
   @keyframes shine {
     0% { background-position: 200% center; }
@@ -123,12 +125,23 @@ export default function About() {
   const brightness = useTransform(mouseY, [-0.5, 0.5], [1.2, 0.8]);
 
   return (
-    <section id="about" className="min-h-screen relative flex items-center justify-center py-20 overflow-hidden">
+    <section id="about" className="min-h-screen relative flex flex-col items-center justify-center py-20 overflow-hidden">
       <style>{customStyles}</style>
 
-      {/* Grid Bg */}
       <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10 pointer-events-none">
         <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[40px_40px]"></div>
+      </div>
+
+      <div className="container mx-auto px-6 mb-12 relative z-10 text-center">
+        <motion.h2 
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           className="text-4xl md:text-5xl font-bold text-foreground inline-block"
+        >
+          About Me
+          <div className="w-full h-1 bg-linear-to-r from-transparent via-purple-500 to-transparent mt-2"></div>
+        </motion.h2>
       </div>
 
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

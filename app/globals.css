@@ -14,6 +14,10 @@
   --star-grid: rgba(255, 255, 255, 0.1);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--foreground);
   background-color: var(--background);
