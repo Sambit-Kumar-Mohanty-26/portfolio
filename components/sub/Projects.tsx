@@ -8,8 +8,8 @@ const projects = [
   {
     title: "The Artisan's Loom",
     category: "Cultural Heritage • E-Commerce",
-    description: "An AI-powered digital marketplace designed to empower Indian artisans by connecting them with a global audience. The platform focuses on preserving cultural heritage through story-rich profiles and regional discovery while removing language and technical barriers.",
-    tech: ["React", "Stripe", "Firebase", "Google Cloud AI", "AR.js (WebXR)"],
+    description: "An AI-powered digital marketplace designed to empower Indian artisans by connecting them with a global audience.",
+    tech: ["React", "Stripe", "Firebase", "Google Cloud AI", "AR.js"],
     color: "#ff7b00", 
     image: "/project1.png",
     link: "#"
@@ -17,8 +17,8 @@ const projects = [
   {
     title: "ResuPlex",
     category: "EdTech • Productivity",
-    description: "An intelligent resume builder that leverages Generative AI to help users craft perfectly tailored, ATS-friendly resumes to accelerate their career progress.",
-    tech: ["TypeScript", "Express", "PostgreSQL", "Puppeteer", "Prisma ORM"],
+    description: "An intelligent resume builder that leverages Generative AI to help users craft perfectly tailored, ATS-friendly resumes.",
+    tech: ["TypeScript", "Express", "PostgreSQL", "Puppeteer", "Prisma"],
     color: "#00f0ff", 
     image: "/project2.png",
     link: "#"
@@ -26,7 +26,7 @@ const projects = [
   {
     title: "Axion Flow",
     category: "Open Source • Tooling",
-    description: "Axion Flow is the AI command center for your factory, transforming operational chaos into predictable, optimized workflow. Our platform gives you a live digital twin to predict disruptions and intelligently guide decisions for maximum productivity.",
+    description: "Axion Flow is the AI command center for your factory, transforming operational chaos into predictable, optimized workflow.",
     tech: ["TypeScript", "Tailwind CSS", "Shadcn UI", "Socket.io"],
     color: "#bd24ff", 
     image: "/project3_v2.png", 
@@ -35,7 +35,7 @@ const projects = [
   {
     title: "Project SAMARTH",
     category: "Governance • Analytics",
-    description: "A Smart Analytics Dashboard specifically designed for \"Police Good Work Recognition.\" It visualizes performance data to help law enforcement agencies monitor safety trends and recognize high-performing units.",
+    description: "A Smart Analytics Dashboard specifically designed for Police Good Work Recognition and performance visualization.",
     tech: ["TypeScript", "Tailwind CSS", "Recharts", "Leaflet Maps"],
     color: "#84cc16", 
     image: "/project4.png", 
@@ -45,14 +45,13 @@ const projects = [
 
 function Card({ i, project, progress, range }: any) {
   const container = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ['start end', 'start start']
-  });
-
-  const filter = useTransform(progress, range, ["brightness(100%)", "brightness(50%)"]); 
-  const opacity = useTransform(progress, range, [1, 0.8]); 
-  const scale = useTransform(progress, range, [1, 0.90]);
+  const isLast = i === projects.length - 1;
+  const targetScale = isLast ? 1 : 0.90;
+  const targetOpacity = isLast ? 1 : 0.8;
+  const targetBrightness = isLast ? "brightness(100%)" : "brightness(75%)";
+  const filter = useTransform(progress, range, ["brightness(100%)", targetBrightness]); 
+  const opacity = useTransform(progress, range, [1, targetOpacity]); 
+  const scale = useTransform(progress, range, [1, targetScale]);
   const topOffset = `calc(120px + ${i * 50}px)`;
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -68,7 +67,7 @@ function Card({ i, project, progress, range }: any) {
   const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.06), transparent 80%)`;
 
   return (
-    <div ref={container} className="flex justify-center sticky" style={{ top: topOffset }}>
+    <div className="flex justify-center sticky" style={{ top: topOffset }}>
       <motion.div 
         style={{ filter, opacity, scale, zIndex: i }} 
         className="relative flex flex-col w-[1000px] h-[500px] origin-top perspective-1000"
@@ -149,7 +148,7 @@ function Card({ i, project, progress, range }: any) {
                 </div>
 
             </div>
-        </div>
+        </div>        
         <div 
            className="absolute -top-10 -right-10 w-96 h-96 rounded-full blur-[150px] opacity-10 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none -z-10"
            style={{ backgroundColor: project.color }}
@@ -165,7 +164,7 @@ export default function Projects() {
     target: container,
     offset: ['start start', 'end end']
   });
-
+   
   return (
     <div ref={container} id="projects" className="relative mt-20 mb-32">
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-purple-900/5 to-transparent blur-3xl -z-10"></div>
@@ -182,15 +181,18 @@ export default function Projects() {
         </motion.div>
       </div>
 
-      <div className="w-full relative z-10 text-white" style={{ height: `${projects.length * 100}vh` }}>
+      <div className="w-full relative z-10 text-white" style={{ height: `${projects.length * 80}vh` }}>
         {projects.map((project, i) => {
+          const rangeStart = i * (1 / (projects.length - 1));
+          const rangeEnd = (i + 1) * (1 / (projects.length - 1));
+
           return (
             <Card 
               key={i} 
               i={i} 
               project={project} 
               progress={scrollYProgress}
-              range={[i / projects.length, (i + 1) / projects.length]}
+              range={[rangeStart, rangeEnd]} 
             />
           );
         })}

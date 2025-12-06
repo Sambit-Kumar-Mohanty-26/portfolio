@@ -15,6 +15,7 @@ export default function ThemeToggle() {
   const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const x = e.clientX;
     const y = e.clientY;
+    // @ts-ignore
     if (!document.startViewTransition) {
       setTheme(theme === 'light' ? 'dark' : 'light');
       return;
