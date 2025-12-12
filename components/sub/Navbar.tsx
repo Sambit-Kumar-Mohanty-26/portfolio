@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import ThemeToggle from '@/components/ui/ThemeToggle'; // Import the button
+import ThemeToggle from '@/components/ui/ThemeToggle'; 
 
 export default function Navbar() {
   const links = ["Home", "About", "Projects", "Contact"];

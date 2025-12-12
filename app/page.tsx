@@ -15,7 +15,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <main className="min-h-screen w-full bg-black text-white relative selection:bg-purple-500/30">
+    <main className="min-h-screen w-full bg-background text-foreground relative selection:bg-purple-500/30">
       <Cursor />
       <AnimatePresence mode='wait'>
         {loading && (

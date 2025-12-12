@@ -174,7 +174,7 @@ export default function Projects() {
            whileInView={{ opacity: 1, y: 0 }}
            viewport={{ once: true }}
         >
-            <h2 className="text-7xl font-bold text-white tracking-tighter">
+            <h2 className="text-7xl font-bold text-foreground tracking-tighter">
                 Selected <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-cyan-500">Works</span>
             </h2>
             <p className="text-gray-400 mt-4 text-xl">Crafting digital perfection, pixel by pixel.</p>

@@ -115,7 +115,7 @@ export default function Contact() {
             </motion.div>
             <h2 
                 ref={headingRef}
-                className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight leading-tight min-h-[120px] md:min-h-40"
+                className="text-5xl md:text-7xl font-bold text-foreground mb-6 tracking-tight leading-tight min-h-[120px] md:min-h-40"
             >
                 {headerText}
                 {isInView && headerText.length < 13 && headerText.length > 0 && <span className="animate-pulse">|</span>}
