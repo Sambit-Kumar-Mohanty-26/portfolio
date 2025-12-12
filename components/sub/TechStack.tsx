@@ -7,6 +7,12 @@ const technologies = [
   { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript/3178C6" },
   { name: "Tailwind", icon: "https://cdn.simpleicons.org/tailwindcss/06B6D4" },
   { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs/339933" },
+  { name: "Express.js", icon: "https://cdn.simpleicons.org/express/default" },
+  { name: "FastAPI", icon: "https://cdn.simpleicons.org/fastapi/009688" },
+  { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB" },
+  { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1" },
+  { name: "Firebase", icon: "https://cdn.simpleicons.org/firebase/FFCA28" },
+  { name: "AWS", icon: "https://cdn.simpleicons.org/amazonaws/232F3E" },
   { name: "MongoDB", icon: "https://cdn.simpleicons.org/mongodb/47A248" },
   { name: "Figma", icon: "https://cdn.simpleicons.org/figma/F24E1E" },
   { name: "Git", icon: "https://cdn.simpleicons.org/git/F05032" },
@@ -14,7 +20,8 @@ const technologies = [
   { name: "Docker", icon: "https://cdn.simpleicons.org/docker/2496ED" },
 ];
 
-const items = [...technologies, ...technologies, ...technologies];
+// Duplicate items to ensure seamless infinite scrolling
+const items = [...technologies, ...technologies];
 
 export default function TechStack() {
   return (
@@ -34,7 +41,7 @@ export default function TechStack() {
         <motion.div
           className="flex gap-12 items-center whitespace-nowrap"
           animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
           whileHover={{ animationPlayState: "paused" }} 
         >
           {items.map((tech, index) => (
@@ -46,7 +53,7 @@ export default function TechStack() {
                 <img 
                     src={tech.icon} 
                     alt={tech.name} 
-                    className="w-10 h-10" 
+                    className="w-10 h-10 object-contain" 
                 />
               </div>
               

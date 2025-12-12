@@ -12,7 +12,8 @@ const projects = [
     tech: ["React", "Stripe", "Firebase", "Google Cloud AI", "AR.js"],
     color: "#ff7b00", 
     image: "/project1.png",
-    link: "#"
+    link: "https://annular-climate-469215-m0.web.app/",
+    github: "https://github.com/Sambit-Kumar-Mohanty-26/The-Artisans-Loom"
   },
   {
     title: "ResuPlex",
@@ -21,7 +22,8 @@ const projects = [
     tech: ["TypeScript", "Express", "PostgreSQL", "Puppeteer", "Prisma"],
     color: "#00f0ff", 
     image: "/project2.png",
-    link: "#"
+    link: "https://resu-plex.vercel.app/",
+    github: "https://github.com/Sambit-Kumar-Mohanty-26/ResuPlex"
   },
   {
     title: "Axion Flow",
@@ -30,7 +32,8 @@ const projects = [
     tech: ["TypeScript", "Tailwind CSS", "Shadcn UI", "Socket.io"],
     color: "#bd24ff", 
     image: "/project3_V2.png", 
-    link: "#"
+    link: "https://axion-flow.vercel.app/",
+    github: "https://github.com/Sambit-Kumar-Mohanty-26/Axion-Flow"
   },
   {
     title: "Project SAMARTH",
@@ -39,7 +42,8 @@ const projects = [
     tech: ["TypeScript", "Tailwind CSS", "Recharts", "Leaflet Maps"],
     color: "#84cc16", 
     image: "/project4.png", 
-    link: "#"
+    link: "https://project-samarth-c443f.web.app/",
+    github: "https://github.com/Sambit-Kumar-Mohanty-26/SAMARTH"
   },
 ];
 
@@ -119,13 +123,13 @@ function Card({ i, project, progress, range }: any) {
                     </div>
                     
                     <div className="flex gap-4 mt-2">
-                        <a href={project.link} className="relative overflow-hidden group/btn flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold text-sm tracking-wide transition-all hover:scale-105">
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="relative overflow-hidden group/btn flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-bold text-sm tracking-wide transition-all hover:scale-105">
                             <span className="relative z-10 flex items-center gap-2">
                                 VISIT SITE <ExternalLink className="w-4 h-4 group-hover/btn:rotate-45 transition-transform duration-300" />
                             </span>
                             <div className="absolute inset-0 bg-linear-to-r from-cyan-400 to-purple-500 opacity-0 group-hover/btn:opacity-20 transition-opacity duration-300"></div>
                         </a>
-                        <a href="#" className="flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-white hover:bg-white/10 hover:border-white transition-all">
+                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-white hover:bg-white/10 hover:border-white transition-all">
                             <Github className="w-5 h-5" />
                         </a>
                     </div>
