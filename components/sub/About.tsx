@@ -2,16 +2,9 @@
 import { motion, useMotionValue, useSpring, useTransform, animate } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Terminal, Github, Star, GitBranch } from 'lucide-react';
+import { Terminal, Github, Star, GitBranch, CalendarDays, ExternalLink } from 'lucide-react';
 
-const GITHUB_USERNAME = "Sambit-Kumar-Mohanty-26"; 
-
-const FALLBACK_STATS = {
-  repos: 11,
-  followers: 3,
-  stars: 3,
-  commits: 670
-};
+const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME || "Sambit-Kumar-Mohanty-26";
 
 const customStyles = `
   @keyframes shine {
@@ -31,6 +24,23 @@ const customStyles = `
     -webkit-background-clip: text;
     color: transparent;
     filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.5));
+  }
+  .card-flip-inner {
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .card-back {
+    transform: rotateY(180deg);
+  }
+  .flipped {
+    transform: rotateY(180deg);
   }
 `;
 
@@ -57,51 +67,38 @@ function Counter({ value, label, icon: Icon }: { value: number; label: string; i
       
       <span 
         ref={nodeRef} 
-        className="text-3xl font-mono font-bold text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 dark:from-cyan-400 dark:to-blue-500" 
+        className="text-3xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-cyan-400 dark:to-blue-500" 
       />
       
-      <span className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-400 mt-1 font-semibold">{label}</span>
+      <span className="text-[10px] uppercase tracking-widest text-slate-500 dark:text-gray-400 mt-1 font-semibold text-center">{label}</span>
     </div>
   );
 }
 
 export default function About() {
-  const [stats, setStats] = useState({
-    repos: 0,
-    followers: 0,
-    stars: 0,
-    commits: 0
-  });
+  const [stats, setStats] = useState({ repos: 0, followers: 0, stars: 0, contributions: 0 });
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
-    async function fetchGitHubData() {
+    async function fetchRealStats() {
       try {
-        const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        if (!userRes.ok) throw new Error("User Fetch Error");
-        const userData = await userRes.json();
+        const res = await fetch('/api/github-stats');
+        const data = await res.json();
 
-        const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
-        let totalStars = 0;
-        
-        if (reposRes.ok) {
-           const reposData = await reposRes.json();
-           totalStars = Array.isArray(reposData) 
-             ? reposData.reduce((acc: number, repo: any) => acc + repo.stargazers_count, 0)
-             : 0;
-        }
+        if (data.error) throw new Error(data.error);
 
         setStats({
-          repos: userData.public_repos ?? FALLBACK_STATS.repos,
-          followers: userData.followers ?? FALLBACK_STATS.followers,
-          stars: totalStars,
-          commits: 450 + ((userData.public_repos ?? 0) * 20)
+          repos: data.repos,
+          followers: data.followers,
+          stars: data.stars,
+          contributions: data.contributions
         });
 
       } catch (error) {
-        setStats(FALLBACK_STATS);
+        console.error("Error fetching stats:", error);
       }
     }
-    fetchGitHubData();
+    fetchRealStats();
   }, []);
 
   const x = useMotionValue(0);
@@ -129,7 +126,7 @@ export default function About() {
       <style>{customStyles}</style>
 
       <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10 pointer-events-none">
-        <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[40px_40px]"></div>
+        <div className="w-full h-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       </div>
 
       <div className="container mx-auto px-6 mb-12 relative z-10 text-center">
@@ -140,7 +137,7 @@ export default function About() {
            className="text-4xl md:text-5xl font-bold text-foreground inline-block"
         >
           About Me
-          <div className="w-full h-1 bg-linear-to-r from-transparent via-purple-500 to-transparent mt-2"></div>
+          <div className="w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mt-2"></div>
         </motion.h2>
       </div>
 
@@ -153,7 +150,7 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
              <h2 className="text-5xl font-extrabold mb-6 dark:text-white text-gray-900 leading-tight">
-               <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-500 to-cyan-500">SYSTEM STATUS:</span> 
+               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">SYSTEM STATUS:</span> 
                <br/> 
                <span className="inline-block text-green-500 animate-pulse drop-shadow-[0_0_15px_rgba(34,197,94,0.6)]">
                  ● ONLINE
@@ -171,68 +168,126 @@ export default function About() {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
              <Counter value={stats.repos} label="Projects" icon={Github} />
-             <Counter value={stats.commits} label="Est. Commits" icon={GitBranch} />
+             <Counter value={stats.contributions} label="Total Contributions" icon={GitBranch} />
              <Counter value={stats.stars} label="Stars Earned" icon={Star} />
              <Counter value={stats.followers} label="Community" icon={Terminal} />
+          </div>
+          
+          <div className="flex justify-center lg:justify-start">
+             <button 
+                onClick={() => setIsFlipped(!isFlipped)}
+                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-purple-500/30 hover:bg-purple-500/10 hover:border-purple-500 transition-all text-sm font-bold text-purple-400 uppercase tracking-widest shadow-lg"
+             >
+                <CalendarDays className="w-4 h-4" /> 
+                {isFlipped ? "View ID Card" : "View Contribution Graph"}
+             </button>
           </div>
         </div>
 
         <motion.div 
-          className="perspective-1000 w-full h-full flex justify-center order-1 lg:order-2"
+          className="perspective-1000 w-full h-[500px] flex justify-center order-1 lg:order-2"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
           <motion.div
-            style={{ rotateX, rotateY, filter: `brightness(${brightness})` }}
+            style={{ 
+                rotateX, 
+                rotateY, 
+                filter: `brightness(${brightness})`,
+            }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="relative w-80 h-[450px] bg-gray-100 dark:bg-[#0a0a0a] border border-gray-300 dark:border-white/20 rounded-2xl shadow-2xl overflow-hidden group"
+            className={`
+                relative w-80 h-[450px] transition-all duration-500 preserve-3d
+            `}
           >
-             <div className="absolute top-0 w-full h-12 bg-gray-200/50 dark:bg-white/5 border-b border-gray-300 dark:border-white/10 flex items-center justify-between px-4 z-20">
-                <div className="flex gap-2">
-                   <div className="w-3 h-3 rounded-full bg-red-500 animate-bounce"></div>
-                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <div className="text-[10px] font-mono text-gray-500 dark:text-gray-400">
-                  {stats.repos > 0 ? "GITHUB: CONNECTED" : "INIT..."}
-                </div>
+             <div className={`relative w-full h-full card-flip-inner ${isFlipped ? 'flipped' : ''}`}>
+                 
+                 <div className="card-front bg-gray-100 dark:bg-[#0a0a0a] border border-gray-300 dark:border-white/20 rounded-2xl shadow-2xl overflow-hidden group">
+                     <div className="absolute top-0 w-full h-12 bg-gray-200/50 dark:bg-white/5 border-b border-gray-300 dark:border-white/10 flex items-center justify-between px-4 z-20">
+                        <div className="flex gap-2">
+                           <div className="w-3 h-3 rounded-full bg-red-500 animate-bounce"></div>
+                           <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                           <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div className="text-[10px] font-mono text-gray-500 dark:text-gray-400">
+                          ID: {stats.repos > 0 ? "VERIFIED" : "LOADING..."}
+                        </div>
+                     </div>
+
+                     <div className="absolute top-20 left-1/2 -translate-x-1/2 w-40 h-40 border-2 border-dashed border-cyan-500/30 rounded-full flex items-center justify-center p-2 z-20">
+                        <div className="w-full h-full relative rounded-full overflow-hidden border border-white/20 bg-black">
+                            <Image src="/avatar.png" alt="ID Avatar" fill className="object-cover" />
+                        </div>
+                     </div>
+
+                     <div className="absolute bottom-10 w-full px-8 space-y-4 z-20">
+                        <div className="space-y-1">
+                           <div className="text-xs text-gray-500 dark:text-gray-400 uppercase">Operative Name</div>
+                           <div className="text-2xl font-bold neon-text tracking-widest font-mono">
+                             SAMBIT
+                           </div>
+                        </div>
+                        <div className="space-y-1">
+                           <div className="text-xs text-gray-500 dark:text-gray-400 uppercase">Class</div>
+                           <div className="flex items-center gap-2">
+                               <Terminal className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                               <span className="font-mono text-sm text-gray-900 dark:text-white font-bold">
+                                 Full Stack Eng.
+                               </span>
+                           </div>
+                        </div>
+                     </div>
+
+                     <motion.div 
+                       animate={{ top: ["0%", "100%", "0%"] }}
+                       transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                       className="absolute left-0 w-full h-1 bg-cyan-400/80 shadow-[0_0_20px_rgba(34,211,238,0.8)] z-10"
+                     >
+                        <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-cyan-400/20 to-transparent"></div>
+                     </motion.div>
+
+                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none z-30"></div>
+                 </div>
+
+
+                 <div className="card-back bg-white dark:bg-[#0d1117] border border-gray-300 dark:border-white/20 rounded-2xl shadow-2xl overflow-hidden flex flex-col items-center justify-center p-4">
+                     
+                     <div className="absolute top-4 left-4 text-xs font-mono text-gray-500">
+                        CONTRIBUTION_LOGS.JSON
+                     </div>
+
+                     <div className="w-full flex flex-col items-center gap-4">
+                        <h3 className="text-sm font-bold text-gray-800 dark:text-white uppercase tracking-wider">
+                           Yearly Activity
+                        </h3>
+                        
+                        <div className="w-full overflow-hidden rounded-lg bg-white p-2 border border-gray-200">
+                           <img 
+                              src={`https://ghchart.rshah.org/409ba5/${GITHUB_USERNAME}`} 
+                              alt="GitHub Contributions"
+                              className="w-full"
+                           />
+                        </div>
+
+                        <a 
+                           href={`https://github.com/${GITHUB_USERNAME}`} 
+                           target="_blank"
+                           rel="noreferrer"
+                           className="flex items-center gap-2 text-xs text-blue-500 hover:underline mt-2"
+                        >
+                           Visit Profile <ExternalLink size={12} />
+                        </a>
+                     </div>
+
+                     <div className="absolute bottom-4 right-4 w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                     <div className="absolute bottom-4 left-4 text-[10px] text-gray-400 font-mono">
+                        ID: {new Date().getFullYear()}
+                     </div>
+                 </div>
+
              </div>
-
-             <div className="absolute top-20 left-1/2 -translate-x-1/2 w-40 h-40 border-2 border-dashed border-cyan-500/30 rounded-full flex items-center justify-center p-2 z-20">
-                <div className="w-full h-full relative rounded-full overflow-hidden border border-white/20 bg-black">
-                    <Image src="/avatar.png" alt="ID Avatar" fill className="object-cover" />
-                </div>
-             </div>
-
-             <div className="absolute bottom-10 w-full px-8 space-y-4 z-20">
-                <div className="space-y-1">
-                   <div className="text-xs text-gray-500 dark:text-gray-400 uppercase">Operative Name</div>
-                   <div className="text-2xl font-bold neon-text tracking-widest font-mono">
-                     SAMBIT
-                   </div>
-                </div>
-                <div className="space-y-1">
-                   <div className="text-xs text-gray-500 dark:text-gray-400 uppercase">Class</div>
-                   <div className="flex items-center gap-2">
-                       <Terminal className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                       <span className="font-mono text-sm text-gray-900 dark:text-white font-bold">
-                         Full Stack Eng.
-                       </span>
-                   </div>
-                </div>
-             </div>
-
-             <motion.div 
-               animate={{ top: ["0%", "100%", "0%"] }}
-               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-               className="absolute left-0 w-full h-1 bg-cyan-400/80 shadow-[0_0_20px_rgba(34,211,238,0.8)] z-10"
-             >
-                <div className="absolute top-0 w-full h-20 bg-linear-to-b from-cyan-400/20 to-transparent"></div>
-             </motion.div>
-
-             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none z-30"></div>
           </motion.div>
         </motion.div>
 

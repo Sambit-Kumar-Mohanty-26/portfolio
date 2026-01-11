@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Preloader from '@/components/sub/Preloader';
 import StarBackground from '@/components/sub/StarBackground';
@@ -14,6 +14,14 @@ import Contact from '@/components/sub/Contact';
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [loading]);
+
   return (
     <main className="min-h-screen w-full bg-background text-foreground relative selection:bg-purple-500/30">
       <Cursor />
@@ -23,12 +31,9 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {!loading && (
-        <div className="relative w-full"> 
-           
+      <div className={`relative w-full transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}> 
            <StarBackground />
            <Navbar />
-    
            <div className="flex flex-col gap-0">
              <Hero />
              <TechStack />
@@ -36,10 +41,7 @@ export default function Home() {
              <Projects />
              <Contact /> 
            </div>
-
-        </div>
-      )}
-      
+      </div>
     </main>
   );
 }

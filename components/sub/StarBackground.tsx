@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useRef, Suspense } from "react";
+import React, { useState, useRef, Suspense, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Preload } from "@react-three/drei";
+import { useTheme } from "next-themes";
 // @ts-ignore
 import * as random from "maath/random/dist/maath-random.esm";
+
 const DarkStars = (props: any) => {
   const ref: any = useRef(null);
   const [sphere] = useState(() =>
@@ -12,8 +14,10 @@ const DarkStars = (props: any) => {
   );
 
   useFrame((state, delta) => {
-    ref.current.rotation.x -= delta / 10;
-    ref.current.rotation.y -= delta / 15;
+    if (ref.current) {
+      ref.current.rotation.x -= delta / 10;
+      ref.current.rotation.y -= delta / 15;
+    }
   });
 
   return (
@@ -34,77 +38,53 @@ const DarkStars = (props: any) => {
 const LightParticles = (props: any) => {
   const ref1: any = useRef(null); 
   const ref2: any = useRef(null); 
-  const [sphere1] = useState(() =>
-    random.inSphere(new Float32Array(3000 * 3), { radius: 1.5 })
-  );
-  const [sphere2] = useState(() =>
-    random.inSphere(new Float32Array(3000 * 3), { radius: 1.2 })
-  );
+  const [sphere1] = useState(() => random.inSphere(new Float32Array(3000 * 3), { radius: 1.5 }));
+  const [sphere2] = useState(() => random.inSphere(new Float32Array(3000 * 3), { radius: 1.2 }));
 
   useFrame((state, delta) => {
     const t = state.clock.getElapsedTime();
-    ref1.current.rotation.x -= delta / 10;
-    ref1.current.rotation.y -= delta / 15;
-    ref1.current.scale.x = 1 + Math.sin(t * 0.3) * 0.1;
-    ref1.current.scale.y = 1 + Math.sin(t * 0.3) * 0.1;
-    ref1.current.scale.z = 1 + Math.sin(t * 0.3) * 0.1;
-    ref2.current.rotation.x += delta / 10;
-    ref2.current.rotation.y += delta / 10;
-    ref2.current.scale.x = 1 + Math.cos(t * 0.5) * 0.1;
-    ref2.current.scale.y = 1 + Math.cos(t * 0.5) * 0.1;
-    ref2.current.scale.z = 1 + Math.cos(t * 0.5) * 0.1;
+    if(ref1.current && ref2.current) {
+        ref1.current.rotation.x -= delta / 10;
+        ref1.current.rotation.y -= delta / 15;
+        ref2.current.rotation.x += delta / 10;
+        ref2.current.rotation.y += delta / 10;
+        const scale = 1 + Math.sin(t * 0.3) * 0.05;
+        ref1.current.scale.set(scale, scale, scale);
+    }
   });
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
       <Points ref={ref1} positions={sphere1} stride={3} frustumCulled {...props}>
-        <PointMaterial
-          transparent
-          color="#3b82f6"
-          size={0.003}
-          sizeAttenuation={true}
-          depthWrite={false}
-          opacity={0.6}
-        />
+        <PointMaterial transparent color="#3b82f6" size={0.003} sizeAttenuation={true} depthWrite={false} opacity={0.6} />
       </Points>
-
       <Points ref={ref2} positions={sphere2} stride={3} frustumCulled {...props}>
-        <PointMaterial
-          transparent
-          color="#a855f7"
-          size={0.004}
-          sizeAttenuation={true}
-          depthWrite={false}
-          opacity={0.8}
-        />
+        <PointMaterial transparent color="#a855f7" size={0.004} sizeAttenuation={true} depthWrite={false} opacity={0.8} />
       </Points>
-
     </group>
   );
 };
 
 export default function StarBackground() {
-  return (
-    <div className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-700">
-      
-      <div className="hide-on-light w-full h-full bg-black absolute inset-0">
-          <Canvas camera={{ position: [0, 0, 1] }}>
-            <Suspense fallback={null}>
-              <DarkStars />
-            </Suspense>
-            <Preload all />
-          </Canvas>
-      </div>
-      
-      <div className="hide-on-dark absolute inset-0 bg-white">
-          <Canvas camera={{ position: [0, 0, 1] }}>
-            <Suspense fallback={null}>
-              <LightParticles />
-            </Suspense>
-            <Preload all />
-          </Canvas>
-      </div>
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const isDark = (theme === 'dark' || resolvedTheme === 'dark');
+
+  return (
+    <div className={`fixed inset-0 z-0 pointer-events-none transition-colors duration-700 ${isDark ? 'bg-black' : 'bg-white'}`}>
+       <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]}>
+          <Suspense fallback={null}>
+             {isDark ? <DarkStars /> : <LightParticles />}
+          </Suspense>
+          <Preload all />
+       </Canvas>
     </div>
   );
 }

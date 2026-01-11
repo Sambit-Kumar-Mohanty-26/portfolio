@@ -1,57 +1,59 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-calistoga), ui-serif, Georgia, serif;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #1a1a1a; 
+  --foreground: #171717;
+  
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-border: rgba(0, 0, 0, 0.1);
+  --nav-text: #1f2937;
+  --nav-text-hover: #7c3aed;
+
+  --ray-start: #ffffff;
+  --ray-mid: #0ea5e9;
+  --ray-end: #6366f1;
 }
 
-:root.dark {
-  --background: #000000;
-  --foreground: #ffffff;
-}
+.dark {
+  --background: #030014;
+  --foreground: #ededed;
 
-html {
-  scroll-behavior: smooth;
+  --nav-bg: rgba(2, 6, 23, 0.85);
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --nav-text: #e2e8f0;
+  --nav-text-hover: #ffffff;
+
+  --ray-start: #000000;
+  --ray-mid: #ffaa40;
+  --ray-end: #a855f7;
 }
 
 body {
+  background: var(--background);
   color: var(--foreground);
-  background-color: var(--background);
+  font-family: var(--font-sans);
   overflow-x: hidden;
-  cursor: none; 
 }
 
-a, button, input { cursor: none; }
-:root.dark .hide-on-dark { display: none; }
-:root:not(.dark) .hide-on-light { display: none; }
-
-::-webkit-scrollbar {
-  width: 12px; 
-  background: transparent; 
+.animate-ray-spin {
+  background: conic-gradient(
+    from 90deg at 50% 50%, 
+    var(--ray-start) 0%, 
+    var(--ray-start) 50%, 
+    var(--ray-mid) 70%, 
+    var(--ray-end) 100%
+  );
+  animation: spin 3s linear infinite;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent; 
-  margin: 4px 0; 
-}
-
-::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(180deg, #4c1d95 0%, #2563eb 50%, #06b6d4 100%);
-  background-clip: content-box; 
-  border: 3px solid transparent; 
-  border-radius: 99px; 
-}
-::-webkit-scrollbar-thumb:hover {
-  background-image: linear-gradient(180deg, #7c3aed 0%, #3b82f6 50%, #0891b2 100%);
-  border: 2px solid transparent; 
-  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5); 
-}
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-new(root) {
-  z-index: 9999;
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
