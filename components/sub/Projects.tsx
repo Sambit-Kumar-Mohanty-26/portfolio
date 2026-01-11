@@ -51,7 +51,7 @@ const projects = [
     description: "DevOptic transforms how developers and designers review code. It eliminates screen-sharing fatigue by providing a shared, interactive browser where you can debug, draw, and navigate together in real-time.",
     tech: ["Next.js", "Express.js", "Socket.io", "WebRTC", "Fabric.js"],
     color: "#ec4899",
-    image: "/Project4.png",
+    image: "/Project43_v5.png",
     link: "https://dev-optic.vercel.app/",
     github: "https://github.com/Sambit-Kumar-Mohanty-26/DevOptic"
   },
@@ -59,7 +59,6 @@ const projects = [
 
 function Card({ i, project, progress, range, targetScale }: any) {
   const container = useRef(null);
-
   const scale = useTransform(progress, range, [1, targetScale]);
 
   return (
@@ -69,7 +68,7 @@ function Card({ i, project, progress, range, targetScale }: any) {
           scale,
           top: `calc(40px + ${i * 25}px)`,
         }}
-        className="relative flex flex-col w-full max-w-[1100px] h-[600px] md:h-[550px] origin-top"
+        className="relative flex flex-col w-full max-w-[1100px] h-auto max-h-[90vh] md:h-[550px] origin-top shadow-2xl rounded-[30px]"
       >
         <div className="relative w-full h-full rounded-[30px] p-[1.5px] overflow-hidden bg-transparent">
           
@@ -80,65 +79,65 @@ function Card({ i, project, progress, range, targetScale }: any) {
             }}
           />
 
-          <div className="relative h-full w-full rounded-[29px] bg-white dark:bg-[#0c0c0c] flex flex-col md:flex-row p-8 md:p-12 gap-10 overflow-hidden">
-            <div className="w-full md:w-[45%] flex flex-col justify-between relative z-20">
-              <div className="space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-black/5 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-md w-fit">
+          <div className="relative h-full w-full rounded-[29px] bg-white dark:bg-[#0c0c0c] flex flex-col md:flex-row p-5 md:p-12 gap-4 md:gap-10 overflow-hidden">
+
+            <div className="relative w-full h-[180px] sm:h-[220px] md:h-full md:flex-1 rounded-2xl overflow-hidden bg-gray-100 dark:bg-white/5 border border-black/5 dark:border-white/5 group order-1 md:order-2 flex-shrink-0">
+              <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/20 dark:bg-black/40 pointer-events-none" />
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                className="object-cover object-center md:object-left-top transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+
+            <div className="w-full md:w-[45%] flex flex-col justify-between relative z-20 order-2 md:order-1 pb-2 md:pb-0">
+              <div className="space-y-3 md:space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/5 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-md w-fit">
                   <div
                     className="w-2 h-2 rounded-full animate-pulse shadow-[0_0_8px_currentColor]"
                     style={{ backgroundColor: project.color, color: project.color }}
                   ></div>
-                  <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-600 dark:text-gray-300">
+                  <span className="text-[9px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-gray-600 dark:text-gray-300">
                     {project.category}
                   </span>
                 </div>
 
-                <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-black dark:text-white leading-[1.1]">
+                <h3 className="text-2xl md:text-5xl font-bold tracking-tighter text-black dark:text-white leading-tight">
                   {project.title}
                 </h3>
 
-                <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 text-sm md:text-lg leading-relaxed line-clamp-3 md:line-clamp-none">
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 md:gap-2">
                   {project.tech.map((t: string) => (
-                    <span key={t} className="text-[11px] font-mono font-medium px-3 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-full">
+                    <span key={t} className="text-[9px] md:text-[11px] font-mono font-medium px-2 py-0.5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-full">
                       {t}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 pt-6">
+              <div className="flex items-center gap-3 pt-4 md:pt-6">
                 <a
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black font-bold text-sm transition-transform active:scale-95 hover:shadow-lg hover:scale-105"
+                  className="flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 rounded-full bg-black dark:bg-white text-white dark:text-black font-bold text-[11px] md:text-sm transition-transform active:scale-95 shadow-md"
                 >
-                  Visit Site <ExternalLink size={16} />
+                  Visit Site <ExternalLink size={12} />
                 </a>
                 <a
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 rounded-full border border-black/10 dark:border-white/10 text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all hover:scale-110"
+                  className="p-2 md:p-3 rounded-full border border-black/10 dark:border-white/10 text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
                 >
-                  <Github size={20} />
+                  <Github size={16} />
                 </a>
               </div>
-            </div>
-
-            <div className="hidden md:block flex-1 relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-white/5 border border-black/5 dark:border-white/5 group">
-              <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/20 dark:bg-black/40 pointer-events-none" />
-              
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover object-left-top transition-transform duration-700 group-hover:scale-105"
-              />
             </div>
           </div>
         </div>
@@ -155,7 +154,7 @@ export default function Projects() {
   });
 
   return (
-    <div ref={container} id="projects" className="relative mt-20 mb-32">
+    <div ref={container} id="projects" className="relative mt-12 md:mt-20 mb-12 md:mb-32">
       
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/5 to-transparent blur-3xl -z-10"></div>
       

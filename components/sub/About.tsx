@@ -78,6 +78,21 @@ function Counter({ value, label, icon: Icon }: { value: number; label: string; i
 export default function About() {
   const [stats, setStats] = useState({ repos: 0, followers: 0, stars: 0, contributions: 0 });
   const [isFlipped, setIsFlipped] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleToggleGraph = () => {
+    const newFlippedState = !isFlipped;
+    setIsFlipped(newFlippedState);
+
+    if (newFlippedState && typeof window !== 'undefined' && window.innerWidth < 768 && cardRef.current) {
+      setTimeout(() => {
+        cardRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }, 100);
+    }
+  };
 
   useEffect(() => {
     async function fetchRealStats() {
@@ -175,7 +190,7 @@ export default function About() {
           
           <div className="flex justify-center lg:justify-start">
              <button 
-                onClick={() => setIsFlipped(!isFlipped)}
+                onClick={handleToggleGraph}
                 className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-purple-500/30 hover:bg-purple-500/10 hover:border-purple-500 transition-all text-sm font-bold text-purple-400 uppercase tracking-widest shadow-lg"
              >
                 <CalendarDays className="w-4 h-4" /> 
@@ -185,6 +200,7 @@ export default function About() {
         </div>
 
         <motion.div 
+          ref={cardRef}
           className="perspective-1000 w-full h-[500px] flex justify-center order-1 lg:order-2"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}

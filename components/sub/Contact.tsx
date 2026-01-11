@@ -98,7 +98,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-8 relative z-20 overflow-hidden bg-white dark:bg-transparent transition-colors duration-300">
+    <section id="contact" className="pt-4 pb-12 md:py-20 relative z-20 overflow-hidden bg-white dark:bg-transparent transition-colors duration-300">
         
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-50/60 to-transparent dark:hidden -z-10 blur-3xl"></div>
 

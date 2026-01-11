@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Calistoga } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import TabVisibility from "@/components/ui/TabVisibility";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 
 const inter = Inter({ 
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
   },
   
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.svg",
   },
 };
 
@@ -75,6 +76,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
            <SmoothScroll>
+             <TabVisibility />
              {children}
            </SmoothScroll>
         </ThemeProvider>

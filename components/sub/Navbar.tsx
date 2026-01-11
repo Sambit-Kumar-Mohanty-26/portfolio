@@ -76,14 +76,14 @@ export default function Navbar() {
                             animate={{ opacity: 1, width: "auto" }}
                             exit={{ opacity: 0, width: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="flex items-center gap-6 overflow-hidden ml-6 whitespace-nowrap"
+                            className="flex items-center gap-4 md:gap-6 overflow-hidden ml-4 md:ml-6 whitespace-nowrap"
                         >
-                            <ul className="flex items-center gap-6">
+                            <ul className="flex items-center gap-4 md:gap-6">
                                 {navLinks.map((item) => (
                                     <li key={item.name}>
                                         <a 
                                             href={item.link}
-                                            className="text-sm font-medium transition-colors hover:text-[var(--nav-text-hover)]"
+                                            className="text-xs md:text-sm font-medium transition-colors hover:text-[var(--nav-text-hover)]"
                                         >
                                             {item.name}
                                         </a>
@@ -91,16 +91,17 @@ export default function Navbar() {
                                 ))}
                             </ul>
 
-                            <div className="h-4 w-[1px] bg-[var(--nav-border)]"></div>
-
-                            <div className="flex items-center gap-3">
-                                <a href="https://github.com/Sambit-Kumar-Mohanty-26" target="_blank" className="hover:text-[var(--nav-text-hover)] transition-colors">
-                                    <Github size={16} />
-                                </a>
-                                <a href="https://www.linkedin.com/in/sambit-kumar-mohanty-36b20234a/" target="_blank" className="hover:text-[var(--nav-text-hover)] transition-colors">
-                                    <Linkedin size={16} />
-                                </a>
-                                <ThemeToggle />
+                            <div className="hidden md:flex items-center gap-6">
+                                <div className="h-4 w-[1px] bg-[var(--nav-border)]"></div>
+                                <div className="flex items-center gap-3">
+                                    <a href="https://github.com/Sambit-Kumar-Mohanty-26" target="_blank" className="hover:text-[var(--nav-text-hover)] transition-colors">
+                                        <Github size={16} />
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/sambit-kumar-mohanty-36b20234a/" target="_blank" className="hover:text-[var(--nav-text-hover)] transition-colors">
+                                        <Linkedin size={16} />
+                                    </a>
+                                    <ThemeToggle />
+                                </div>
                             </div>
                         </motion.div>
                     )}
@@ -110,6 +111,24 @@ export default function Navbar() {
         </div>
 
       </motion.div>
+        <div className="md:hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
+            <div className="relative group">
+                <div className="absolute inset-[-1px] rounded-full overflow-hidden">
+                    <span className="absolute inset-[-1000%] animate-ray-spin" />
+                </div>
+                
+                <div className="relative flex items-center gap-8 px-8 py-3 rounded-full bg-[var(--nav-bg)] backdrop-blur-xl border border-[var(--nav-border)] shadow-2xl">
+                <a href="https://github.com/Sambit-Kumar-Mohanty-26" target="_blank" className="text-[var(--nav-text)] hover:text-purple-500 transition-colors">
+                    <Github size={20} />
+                </a>
+                <a href="https://www.linkedin.com/in/sambit-kumar-mohanty-36b20234a/" target="_blank" className="text-[var(--nav-text)] hover:text-blue-500 transition-colors">
+                    <Linkedin size={20} />
+                </a>
+                <div className="h-4 w-[1px] bg-[var(--nav-border)]"></div>
+                <ThemeToggle />
+                </div>
+            </div>
+        </div>
     </div>
   );
 }
