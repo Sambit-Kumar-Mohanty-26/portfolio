@@ -36,12 +36,12 @@ const projects = [
     github: "https://github.com/Sambit-Kumar-Mohanty-26/Axion-Flow"
   },
   {
-    title: "Obsidian Market",
+    title: "Obsidian Vault",
     category: " Cryptography • End-to-End Security",
     description: "Obsidian Market is the zero-knowledge command center for digital assets, transforming raw data into secure, tradeable, and encrypted collectibles..",
     tech: ["Next.js", "Solidity", "Ethers.js", "IPFS", "AES-256-GCM"],
     color: "#84cc16",
-    image: "/project45_V3.png",
+    image: "/ProjectVersion4_v2.png",
     link: "https://secure-ipfs-marketplace.vercel.app/",
     github: "https://github.com/Sambit-Kumar-Mohanty-26/Secure-IPFS-Marketplace"
   },
