@@ -41,7 +41,7 @@ const projects = [
     description: "Obsidian Market is the zero-knowledge command center for digital assets, transforming raw data into secure, tradeable, and encrypted collectibles..",
     tech: ["Next.js", "Solidity", "Ethers.js", "IPFS", "AES-256-GCM"],
     color: "#84cc16",
-    image: "/ProjectVersion4_v2.png",
+    image: "/Project100_V88.png",
     link: "https://secure-ipfs-marketplace.vercel.app/",
     github: "https://github.com/Sambit-Kumar-Mohanty-26/Secure-IPFS-Marketplace"
   },
