@@ -9,6 +9,7 @@ import TechStack from '@/components/sub/TechStack';
 import About from '@/components/sub/About';
 import Cursor from '@/components/ui/Cursor';
 import Projects from '@/components/sub/Projects';
+import Experience from '@/components/sub/Experience';
 import Contact from '@/components/sub/Contact';
 
 export default function Home() {
@@ -39,6 +40,7 @@ export default function Home() {
              <TechStack />
              <About />
              <Projects />
+             <Experience />
              <Contact /> 
            </div>
       </div>
