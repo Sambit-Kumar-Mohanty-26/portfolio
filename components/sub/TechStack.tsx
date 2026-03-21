@@ -73,6 +73,7 @@ export default function TechStack() {
                         fill
                         sizes="40px"
                         className="object-contain"
+                        unoptimized
                     />
                 </div>
               </div>
