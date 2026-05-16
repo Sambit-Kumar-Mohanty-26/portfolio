@@ -259,9 +259,7 @@ export default function Contact() {
                 </a>
             </div>
             
-            <div className="mt-12 text-center">
-                <p className="text-gray-500 text-sm">© 2025 Sambit Kumar Mohanty. Built with <span className="text-black dark:text-white font-bold">Next.js</span> & <span className="text-black dark:text-white font-bold">Passion</span>.</p>
-            </div>
+
         </div>
 
       </div>

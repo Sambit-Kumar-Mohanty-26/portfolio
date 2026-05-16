@@ -11,6 +11,7 @@ import Cursor from '@/components/ui/Cursor';
 import Projects from '@/components/sub/Projects';
 import Experience from '@/components/sub/Experience';
 import Contact from '@/components/sub/Contact';
+import Footer from '@/components/sub/Footer';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,7 @@ export default function Home() {
              <Projects />
              <Experience />
              <Contact /> 
+             <Footer />
            </div>
       </div>
     </main>
