@@ -147,7 +147,7 @@ const usePointerTracking = (ref: React.RefObject<HTMLDivElement | null>) => {
 };
 
 const RefractionNoise = () => (
-  <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] dark:opacity-[0.04] mix-blend-overlay">
+  <div className="hidden md:block absolute inset-0 z-0 pointer-events-none opacity-[0.03] dark:opacity-[0.04] mix-blend-overlay">
     <svg width="100%" height="100%">
       <filter id="crypto-noise">
         <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
@@ -167,6 +167,26 @@ const CommitNode = ({
 }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [isCopied, setIsCopied] = useState(false);
+  // Default to true (safe/lightweight) for SSR to prevent hydration mismatch
+  // and avoid mounting heavy effects on low-end devices even for a split second.
+  const [skipEffects, setSkipEffects] = useState(true);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    
+    const updatePerformanceMode = () => {
+      const prefersReduced = mediaQuery.matches;
+      const isLowEnd = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
+      setSkipEffects(prefersReduced || isLowEnd);
+    };
+
+    // Run once on mount
+    updatePerformanceMode();
+
+    // Listen for OS-level changes
+    mediaQuery.addEventListener('change', updatePerformanceMode);
+    return () => mediaQuery.removeEventListener('change', updatePerformanceMode);
+  }, []);
 
   const { mouseX, mouseY, handlePointerMove, handlePointerLeave } = usePointerTracking(nodeRef);
 
@@ -211,26 +231,35 @@ const CommitNode = ({
         ref={nodeRef}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
-        className="relative w-full z-20"
-        style={{ y, scale, filter, transformStyle: 'preserve-3d' }}
+        className="relative w-full z-20 will-change-transform"
+        style={{ 
+          y, 
+          scale, 
+          ...(skipEffects ? {} : { filter }), 
+          transformStyle: skipEffects ? 'flat' : 'preserve-3d' 
+        }}
       >
-        <div className="relative w-full rounded-2xl md:rounded-3xl border border-slate-200/60 dark:border-white/[0.08] bg-white/70 dark:bg-black/40 backdrop-blur-2xl overflow-hidden shadow-xl dark:shadow-2xl">
-          <RefractionNoise />
+        <div className="relative w-full rounded-2xl md:rounded-3xl border border-slate-200/60 dark:border-white/[0.08] bg-white/95 dark:bg-slate-900/95 md:bg-white/70 md:dark:bg-black/40 backdrop-blur-none md:backdrop-blur-2xl overflow-hidden shadow-xl dark:shadow-2xl">
+          {!skipEffects && <RefractionNoise />}
 
-          <motion.div
-            className="absolute inset-0 z-10 pointer-events-none opacity-0 group-hover/commit:opacity-100 transition-opacity duration-700 mix-blend-multiply dark:mix-blend-screen"
-            style={{ background: ambientGlow }}
-          />
+          {!skipEffects && (
+            <motion.div
+              className="hidden md:block absolute inset-0 z-10 pointer-events-none opacity-0 group-hover/commit:opacity-100 transition-opacity duration-700 mix-blend-multiply dark:mix-blend-screen"
+              style={{ background: ambientGlow }}
+            />
+          )}
 
-          <motion.div
-            className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover/commit:opacity-100 transition-opacity duration-500"
-            style={{
-              border: `1px solid ${commit.theme.hex}`,
-              WebkitMaskImage: maskImage,
-              maskImage: maskImage,
-              borderRadius: 'inherit',
-            }}
-          />
+          {!skipEffects && (
+            <motion.div
+              className="hidden md:block absolute inset-0 z-20 pointer-events-none opacity-0 group-hover/commit:opacity-100 transition-opacity duration-500"
+              style={{
+                border: `1px solid ${commit.theme.hex}`,
+                WebkitMaskImage: maskImage,
+                maskImage: maskImage,
+                borderRadius: 'inherit',
+              }}
+            />
+          )}
 
           <div className="relative z-30 flex flex-col h-full">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-6 py-4 border-b border-slate-200/60 dark:border-white/[0.05] bg-slate-50/50 dark:bg-white/[0.02]">

@@ -68,12 +68,15 @@ function Card({ i, project, progress, range, targetScale }: any) {
           scale,
           top: `calc(40px + ${i * 25}px)`,
         }}
-        className="relative flex flex-col w-full max-w-[1100px] h-auto max-h-[90vh] md:h-[550px] origin-top shadow-2xl rounded-[30px]"
+        className="relative flex flex-col w-full max-w-[1100px] h-auto max-h-[90vh] md:h-[550px] origin-top shadow-2xl rounded-[30px] will-change-transform"
       >
-        <div className="relative w-full h-full rounded-[30px] p-[1.5px] overflow-hidden bg-transparent">
+        <div 
+          className="relative w-full h-full rounded-[30px] p-[1.5px] overflow-hidden bg-[var(--mobile-border)] md:bg-transparent"
+          style={{ '--mobile-border': project.color } as React.CSSProperties}
+        >
           
           <div
-            className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite]"
+            className="hidden md:block absolute inset-[-1000%] animate-[spin_4s_linear_infinite]"
             style={{
               background: `conic-gradient(from 90deg at 50% 50%, #00000000 50%, ${project.color} 100%)`
             }}
@@ -93,7 +96,7 @@ function Card({ i, project, progress, range, targetScale }: any) {
 
             <div className="w-full md:w-[45%] flex flex-col justify-between relative z-20 order-2 md:order-1 pb-2 md:pb-0">
               <div className="space-y-3 md:space-y-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/5 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-md w-fit">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/5 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-none md:backdrop-blur-md w-fit">
                   <div
                     className="w-2 h-2 rounded-full animate-pulse shadow-[0_0_8px_currentColor]"
                     style={{ backgroundColor: project.color, color: project.color }}

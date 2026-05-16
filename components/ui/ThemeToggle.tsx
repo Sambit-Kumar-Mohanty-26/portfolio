@@ -15,8 +15,13 @@ export default function ThemeToggle() {
   const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const x = e.clientX;
     const y = e.clientY;
+    
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowEnd = navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false;
+    const skipHeavyEffects = prefersReduced || isLowEnd;
+
     // @ts-ignore
-    if (!document.startViewTransition) {
+    if (skipHeavyEffects || !document.startViewTransition) {
       setTheme(theme === 'light' ? 'dark' : 'light');
       return;
     }
