@@ -142,16 +142,18 @@ export default function ProfileVisits() {
       }
 
       // sendBeacon survives tab close — unlike fetch()
-      navigator.sendBeacon(
-        '/api/profile-visits',
-        JSON.stringify({
+      // Must use Blob to set Content-Type: application/json; plain string sends text/plain
+      const blob = new Blob(
+        [JSON.stringify({
           count: shouldCount,
           path: window.location.pathname,
           referer: document.referrer,
           timeOnPage,
           maxScrollDepth,
-        })
+        })],
+        { type: 'application/json' }
       );
+      navigator.sendBeacon('/api/profile-visits', blob);
     };
 
     const handleVisibilityChange = () => {
