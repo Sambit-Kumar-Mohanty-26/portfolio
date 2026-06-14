@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   category: "technology",
   verification: {
-    google: "9P5FoXSWxpi_7gWFxKMOng2TQBDJRrVF4kRPP4JYzmg",
+    google: "7YesKgE21GsKP73w6hQ_zf6Q1XT_E044adY6ZRsrOf8",
   },
 
   openGraph: {
