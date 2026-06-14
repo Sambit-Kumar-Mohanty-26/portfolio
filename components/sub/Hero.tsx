@@ -186,7 +186,7 @@ export default function Hero() {
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-[1.1] tracking-tight text-gray-900 dark:text-white"
           >
-            Hi, I'm <br />
+            Hi, I&apos;m <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-purple-600 to-cyan-500 animate-gradient bg-300%">
               Sambit.
             </span>
@@ -200,7 +200,7 @@ export default function Hero() {
           >
             <span className="text-lg md:text-xl font-medium text-gray-500 dark:text-slate-400 mb-2">I specialize in</span>
             <div className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-600 dark:from-purple-400 dark:to-cyan-400 font-mono">
-               <Typewriter words={["Full Stack Development", "Blockchain Engineering", "SaaS Architecture"]} />
+               <Typewriter words={["Full Stack Development", "Web3 Development", "Blockchain Engineering", "SaaS Architecture"]} />
             </div>
           </motion.div>
 

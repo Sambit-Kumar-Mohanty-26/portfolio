@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import TabVisibility from "@/components/ui/TabVisibility";
 import SmoothScroll from "@/components/providers/SmoothScroll";
+import { siteConfig } from "@/lib/site";
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -19,29 +20,60 @@ const calistoga = Calistoga({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Sambit | Full Stack Developer",
-    template: "%s | Sambit",
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: "Portfolio of Sambit, a Full Stack Developer specializing in Next.js, MERN Stack, and SaaS Architecture.",
-  keywords: ["Full Stack Developer", "Next.js", "React", "TypeScript", "Portfolio", "Web Development", "MERN Stack"],
-  authors: [{ name: "Sambit" }],
-  creator: "Sambit",
+  description: siteConfig.description,
+  keywords: [
+    "Sambit",
+    "Sambit Kumar Mohanty",
+    "Sambit Kumar Mohanty full stack developer",
+    "Sambit Kumar Mohanty Web3 developer",
+    "Full Stack Developer",
+    "Web3 Developer",
+    "Blockchain Developer",
+    "Next.js Developer",
+    "MERN Stack Developer",
+    "SaaS Developer",
+  ],
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  alternates: {
+    canonical: "/",
+  },
+  category: "technology",
+  verification: {
+    google: "google6843e7bbda588f29",
+  },
 
   openGraph: {
-    title: "Sambit | Full Stack Developer",
-    description: "Building immersive digital experiences with clean code & modern design.",
-    url: "https://your-domain.com",
-    siteName: "Sambit's Portfolio",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: "/",
+    siteName: `${siteConfig.name}'s Portfolio`,
     locale: "en_US",
     type: "website",
   },
   
   twitter: {
     card: "summary_large_image",
-    title: "Sambit | Full Stack Developer",
-    description: "Building immersive digital experiences with clean code & modern design.",
-    creator: "@yourtwitterhandle",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   
   icons: {
@@ -61,6 +93,43 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${siteConfig.url}/#person`,
+        name: siteConfig.name,
+        url: siteConfig.url,
+        image: `${siteConfig.url}/avatar.png`,
+        jobTitle: "Full Stack and Web3 Developer",
+        description: siteConfig.description,
+        sameAs: [siteConfig.github, siteConfig.linkedin],
+        knowsAbout: [
+          "Full Stack Development",
+          "Web3",
+          "Blockchain",
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Node.js",
+          "MERN Stack",
+          "Solidity",
+          "SaaS Architecture",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteConfig.url}/#website`,
+        url: siteConfig.url,
+        name: `${siteConfig.name} Portfolio`,
+        description: siteConfig.description,
+        author: { "@id": `${siteConfig.url}/#person` },
+        inLanguage: "en",
+      },
+    ],
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -74,6 +143,10 @@ export default function RootLayout({
           overflow-x-hidden
         `}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
            <SmoothScroll>
              <TabVisibility />

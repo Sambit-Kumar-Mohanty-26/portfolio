@@ -65,7 +65,7 @@ export default async function Image() {
                     letterSpacing: '-1px',
                 }}
             >
-                Full Stack Developer & SaaS Architect
+                Full Stack & Web3 Developer
             </p>
 
             <div style={{ display: 'flex', gap: '20px', marginTop: 40 }}>
