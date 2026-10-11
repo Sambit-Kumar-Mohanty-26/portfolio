@@ -65,7 +65,7 @@ const REPOSITORY_LOG: CommitData[] =[
     pointer: 'HEAD -> main, origin/main',
     role: 'Full Stack Developer Intern',
     company: 'WombTo18',
-    period: 'Mar 2026 – Present',
+    period: 'Mar 2026 – Oct 2026',
     location: 'Pune, India',
     author: 'sys_admin',
     timestamp: 'Current Runtime',
